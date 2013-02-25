@@ -1,0 +1,155 @@
+/**
+ * wordsearch.js
+ *
+ * Generate a wordsearch puzzle
+ *
+ * Author: Dave Eddy <dave@daveeddy.com>
+ * Date: 2/24/13
+ * License: MIT
+ */
+
+;(function() {
+  var letters = 'abcdefghijklmnopqrstuvwxyz'; // letters used for filler
+  var wordre = /^[a-z]+$/;                    // what a valid word looks like
+
+  /**
+   * wordsearch
+   *
+   * generate a wordsearch puzzle
+   */
+  function wordsearch(words, width, height, opts) {
+    if (!words || !words.length) return false;
+    width = width || 20;
+    height = height || 20;
+    opts = opts || {};
+    opts.backwards = opts.hasOwnProperty('backwards') ? opts.backwards : 0.5;
+
+    // filter out any non-words
+    words = words.filter(function(a) {
+      return wordre.test(a);
+    });
+
+    // sort the words by length (biggest first)
+    words.sort(function(a, b) {
+      return a.length < b.length ? -1 : 1;
+    });
+
+    // populate the grid with empty arrays
+    var grid = new Array(height);
+    for (var i = 0; i < grid.length; i++)
+      grid[i] = new Array(width);
+
+    var unplaced = [];
+
+    // loop the words
+    for (var i = 0; i < words.length; i++) {
+      var word = originalword = words[i];
+
+      // reverse the word if needed
+      if (Math.random() < opts.backwards)
+        word = word.split('').reverse().join('');
+
+      // determine the direction (up-right, right, down-right, down)
+      var direction = Math.floor(Math.random() * 4);
+      var info = directioninfo(word, direction, width, height);
+
+      // pick a random spot
+      // try to place the word in the grid
+      var x, y;
+      var placed = false;
+      while (!placed) {
+        if (info.maxx < 0 || info.maxy < 0) {
+          unplaced.push(originalword);
+          break;
+        }
+
+        x = Math.floor(Math.random() * (info.maxx - info.minx) + info.minx);
+        y = Math.floor(Math.random() * (info.maxy - info.miny) + info.miny);
+
+        for (var l = 0; l < word.length; l++) {
+          grid[y][x] = word.charAt(l);
+          if (opts.color) grid[y][x] = '\033[41m' + grid[y][x] + '\033[0m';
+          y += info.dy;
+          x += info.dx;
+        }
+
+        placed = true;
+      }
+    } // end word loop
+
+    // the solved grid
+    var solved = JSON.parse(JSON.stringify(grid));
+
+    // put in filler characters
+    for (var i = 0; i < grid.length; i++)
+      for (var j = 0; j < grid[i].length; j++)
+        if (!grid[i][j])
+          grid[i][j] = letters.charAt(
+              Math.floor(Math.random() * letters.length)
+          );
+
+    // give the user some stuff
+    return {
+      grid: grid,
+      solved: solved,
+      unplaced: unplaced
+    };
+  }
+
+  /**
+   * given an integer that represents a direction,
+   * return an object with boundary information
+   * and velocity
+   */
+  function directioninfo(word, direction, width, height) {
+    // determine the bounds
+    var minx = 0, miny = 0;
+    var maxx = width - 1;
+    var maxy = height - 1;
+    var dx = 0, dy = 0;
+    switch (direction) {
+      case 0: // up-right
+        maxy = height - 1;
+        miny = word.length - 1;
+        dy = -1;
+        maxx = width - word.length;
+        minx = 0;
+        dx = 1;
+        break;
+      case 1: // right
+        maxx = width - word.length;
+        minx = 0;
+        dx = 1;
+        break;
+      case 2: // down-right
+        miny = 0;
+        maxy = height - word.length;
+        dy = 1;
+        maxx = width - word.length;
+        minx = 0;
+        dx = 1;
+        break;
+      case 3: // down
+        miny = 0;
+        maxy = height - word.length;
+        dy = 1;
+        break;
+      default: /* NOTREACHED */
+        break;
+    }
+    return {
+      maxx: maxx,
+      maxy: maxy,
+      minx: minx,
+      miny: miny,
+      dx: dx,
+      dy: dy
+    }
+  }
+
+  // export the function
+  if (typeof exports === 'undefined')
+    window.wordsearch = wordsearch;
+  else
+    module.exports = wordsearch;
+})();
