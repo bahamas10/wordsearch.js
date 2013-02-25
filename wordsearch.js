@@ -42,6 +42,7 @@
     var unplaced = [];
 
     // loop the words
+    var colorno = 0;
     for (var i = 0; i < words.length; i++) {
       var word = originalword = words[i];
 
@@ -89,7 +90,7 @@
         y = oy;
         for (var l = 0; l < word.length; l++) {
           grid[y][x] = word.charAt(l);
-          if (opts.color) grid[y][x] = '\033[41m' + grid[y][x] + '\033[0m';
+          if (opts.color) grid[y][x] = '\033[' + (colorno + 41) + 'm' + grid[y][x] + '\033[0m';
 
           y += info.dy;
           x += info.dx;
@@ -98,6 +99,7 @@
       } // end placement while loop
 
       if (attempts >= 20) unplaced.push(originalword);
+      colorno = (colorno + 1) % 6;
     } // end word loop
 
     // the solved grid

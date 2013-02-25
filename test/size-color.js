@@ -1,6 +1,6 @@
 var fs = require('fs');
 var wordsearch = require('../');
-var words = fs.readFileSync('../words.txt', 'utf-8').split('\n');
+var words = fs.readFileSync(__dirname + '/../words.txt', 'utf-8').split('\n');
 
 var size = (process.argv[2] || '15x15').split('x');
 var puzzle = wordsearch(words, +size[0], +size[1], {color: true});

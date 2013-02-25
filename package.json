@@ -5,7 +5,7 @@
   "author": "Dave Eddy <dave@daveeddy.com> (http://www.daveeddy.com)",
   "main": "./wordsearch.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "for f in test/*.js; do echo \"$f\"; node \"$f\" || exit 1; echo; done; echo \"passed!\""
   },
   "repository": "git://github.com/bahamas10/wordsearch.js.git",
   "license": "MIT"
