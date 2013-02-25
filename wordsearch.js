@@ -70,16 +70,25 @@
 
         // check to make sure there are no collisions
         var placeable = true;
+        var count = 0;
         for (var l = 0; l < word.length; l++) {
-          if (grid[y][x] && grid[y][x] !== word.charAt(l)) {
-            placeable = false; // :(
-            break;
+          var charingrid = grid[y][x];
+
+          if (charingrid) { // check if there is a character in the grid
+            if (charingrid !== word.charAt(l)) {
+              // not the same latter, try again
+              placeable = false; // :(
+              break;
+            } else {
+              // same letter! count it
+              count++;
+            }
           }
           // keep trying!
           y += info.dy;
           x += info.dx;
         }
-        if (!placeable) {
+        if (!placeable || count >= word.length) {
           attempts++;
           continue;
         }
