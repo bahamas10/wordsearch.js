@@ -49,32 +49,55 @@
       if (Math.random() < opts.backwards)
         word = word.split('').reverse().join('');
 
-      // determine the direction (up-right, right, down-right, down)
-      var direction = Math.floor(Math.random() * 4);
-      var info = directioninfo(word, direction, width, height);
-
       // pick a random spot
       // try to place the word in the grid
-      var x, y;
-      var placed = false;
-      while (!placed) {
+      var attempts = 0;
+      while (attempts < 20) {
+        // determine the direction (up-right, right, down-right, down)
+        var direction = Math.floor(Math.random() * 4);
+        var info = directioninfo(word, direction, width, height);
+
+        // word is too long, bail out
         if (info.maxx < 0 || info.maxy < 0) {
           unplaced.push(originalword);
           break;
         }
 
-        x = Math.floor(Math.random() * (info.maxx - info.minx) + info.minx);
-        y = Math.floor(Math.random() * (info.maxy - info.miny) + info.miny);
+        // random starting point
+        var x = ox = Math.floor(Math.random() * (info.maxx - info.minx) + info.minx);
+        var y = oy = Math.floor(Math.random() * (info.maxy - info.miny) + info.miny);
 
+        // check to make sure there are no collisions
+        var placeable = true;
         for (var l = 0; l < word.length; l++) {
-          grid[y][x] = word.charAt(l);
-          if (opts.color) grid[y][x] = '\033[41m' + grid[y][x] + '\033[0m';
+          if (grid[y][x] && grid[y][x] !== word.charAt(l)) {
+            placeable = false; // :(
+            break;
+          }
+          // keep trying!
           y += info.dy;
           x += info.dx;
         }
+        if (!placeable) {
+          attempts++;
+          continue;
+        }
 
-        placed = true;
-      }
+        // the word was placeable if we make it here!
+        // reset x and y and place it
+        x = ox;
+        y = oy;
+        for (var l = 0; l < word.length; l++) {
+          grid[y][x] = word.charAt(l);
+          if (opts.color) grid[y][x] = '\033[41m' + grid[y][x] + '\033[0m';
+
+          y += info.dy;
+          x += info.dx;
+        }
+        break;
+      } // end placement while loop
+
+      if (attempts >= 20) unplaced.push(originalword);
     } // end word loop
 
     // the solved grid
