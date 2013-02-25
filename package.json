@@ -7,6 +7,5 @@
   "scripts": {
     "test": "for f in test/*.js; do echo \"$f\"; node \"$f\" || exit 1; echo; done; echo \"passed!\""
   },
-  "repository": "git://github.com/bahamas10/wordsearch.js.git",
-  "license": "MIT"
+  "repository": "git://github.com/bahamas10/wordsearch.js.git"
 }

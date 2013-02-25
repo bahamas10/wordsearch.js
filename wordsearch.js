@@ -5,7 +5,6 @@
  *
  * Author: Dave Eddy <dave@daveeddy.com>
  * Date: 2/24/13
- * License: MIT
  */
 
 ;(function() {
