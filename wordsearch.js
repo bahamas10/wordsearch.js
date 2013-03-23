@@ -11,6 +11,7 @@
 ;(function() {
   var letters = 'abcdefghijklmnopqrstuvwxyz'; // letters used for filler
   var wordre = /^[a-z]+$/;                    // what a valid word looks like
+  var MAXATTEMPTS = 20;                       // maximum amount of times to place a word
 
   /**
    * wordsearch
@@ -53,7 +54,7 @@
       // pick a random spot
       // try to place the word in the grid
       var attempts = 0;
-      while (attempts < 20) {
+      while (attempts < MAXATTEMPTS) {
         // determine the direction (up-right, right, down-right, down)
         var direction = Math.floor(Math.random() * 4);
         var info = directioninfo(word, direction, width, height);
@@ -65,8 +66,8 @@
         }
 
         // random starting point
-        var x = ox = Math.floor(Math.random() * (info.maxx - info.minx) + info.minx);
-        var y = oy = Math.floor(Math.random() * (info.maxy - info.miny) + info.miny);
+        var x = ox = Math.round(Math.random() * (info.maxx - info.minx) + info.minx);
+        var y = oy = Math.round(Math.random() * (info.maxy - info.miny) + info.miny);
 
         // check to make sure there are no collisions
         var placeable = true;

@@ -1,9 +1,10 @@
 var fs = require('fs');
 var wordsearch = require('../');
-var words = fs.readFileSync(__dirname + '/../example-words.txt', 'utf-8').split('\n');
+var words = ['hi', 'ok'];
 
-var puzzle = wordsearch(words, 20, 20);
+var puzzle = wordsearch(words, 3, 3, {color: true});
 
+console.log('unplaced: %s', puzzle.unplaced);
 puzzle.grid.forEach(function(row) {
   console.log(row.join(' '));
 });
