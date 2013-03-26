@@ -20,8 +20,8 @@
    */
   function wordsearch(words, width, height, opts) {
     if (!words || !words.length) return false;
-    width = width || 20;
-    height = height || 20;
+    width = +width || 20;
+    height = +height || 20;
     opts = opts || {};
     opts.backwards = opts.hasOwnProperty('backwards') ? opts.backwards : 0.5;
 
@@ -60,7 +60,7 @@
         var info = directioninfo(word, direction, width, height);
 
         // word is too long, bail out
-        if (info.maxx < 0 || info.maxy < 0) {
+        if (info.maxx < 0 || info.maxy < 0 || info.maxy < info.miny || info.maxx < info.minx) {
           unplaced.push(originalword);
           break;
         }
@@ -112,16 +112,18 @@
       colorno = (colorno + 1) % 6;
     } // end word loop
 
-    // the solved grid
+    // the solved grid... XXX I hate this
     var solved = JSON.parse(JSON.stringify(grid));
 
     // put in filler characters
     for (var i = 0; i < grid.length; i++)
       for (var j = 0; j < grid[i].length; j++)
-        if (!grid[i][j])
+        if (!grid[i][j]) {
+          solved[i][j] = ' ';
           grid[i][j] = letters.charAt(
               Math.floor(Math.random() * letters.length)
           );
+        }
 
     // give the user some stuff
     return {

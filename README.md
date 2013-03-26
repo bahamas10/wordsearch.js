@@ -44,14 +44,14 @@ h d i q
 d a v e
 undefined
 > search.solved
-[ [ null, null, null, null ],
-  [ null, 'i', null, null ],
-  [ 'h', null, null, null ],
+[ [ ' ', ' ', ' ', ' ' ],
+  [ ' ', 'i', ' ', ' ' ],
+  [ 'h', ' ', ' ', ' ' ],
   [ 'd', 'a', 'v', 'e' ] ]
 > search.solved.forEach(function(row) { console.log(row.join(' ')); } );
-   
- i  
-h   
+       
+  i    
+h      
 d a v e
 undefined
 > search.unplaced
@@ -65,7 +65,7 @@ undefined
 - `height`: the height of the puzzle, defaults to 20
 - `opts`: an optional object for options
     - `opts.color`: color code (ANSI) the words in the puzzle, defaults to false
-    - `opts.back
+    - `opts.backwards`: the probability between 0 and 1 (inclusive) of placing words backwards, defaults to 0.5
 
 License
 -------

@@ -7,5 +7,9 @@
   "scripts": {
     "test": "for f in test/*.js; do echo \"$f\"; node \"$f\" || exit 1; echo; done; echo \"passed!\""
   },
-  "repository": "git://github.com/bahamas10/wordsearch.js.git"
+  "repository": "git://github.com/bahamas10/wordsearch.js.git",
+  "dependencies": {
+    "posix-getopt": "~1.0.0",
+    "latest": "~0.1.0"
+  }
 }
