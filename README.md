@@ -31,7 +31,6 @@ Example
 Create a simple wordsearch puzzle
 
 ``` js
-> var wordsearch
 > var search = wordsearch(['hi', 'dave'], 4, 4);
 undefined
 > search.grid
