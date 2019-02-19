@@ -1,6 +1,6 @@
 {
   "name": "wordsearch",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Generate wordsearch puzzles",
   "author": "Dave Eddy <dave@daveeddy.com> (http://www.daveeddy.com)",
   "main": "./wordsearch.js",
