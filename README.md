@@ -67,6 +67,15 @@ undefined
 - `opts`: an optional object for options
     - `opts.color`: color code (ANSI) the words in the puzzle, defaults to false
     - `opts.backwards`: the probability between 0 and 1 (inclusive) of placing words backwards, defaults to 0.5
+    - `opts.letters`: a string of possible letters to use as filler, defaults to the alphabet
+
+Use `opts.letters` to increase the probability of certain letters being included, for example:
+
+``` js
+opts.letters = 'aaaaaaaaaabcdefghijklmnopqrstuvxwz';
+```
+
+Will use all of the letters of the alphabet with a high probability of using the letter `a`.
 
 Command Line
 ------------
@@ -82,11 +91,12 @@ Installation and usage
     options
       -c, --color        colorize the words in the puzzle, defaults to false
       -d, --dimensions   the dimensions of the puzzle, ex `-d 20`, `-d 10x8`, defaults to `20x20`
-      -f, --file         a newline separated list of words to use, defaults to stdin
-      -h, --help         print this message and exit
-      -s, --solved       print the solved puzzle as well as the actual puzzle
-      -u, --updates      check for available updates
-      -v, --version      print the version number and exit
+      -f, --file              a newline separated list of words to use, defaults to stdin
+      -h, --help              print this message and exit
+      -l, --lettes <abc..>    letters to use, defaults to the alphabet
+      -s, --solved            print the solved puzzle as well as the actual puzzle
+      -u, --updates           check for available updates
+      -v, --version           print the version number and exit
 
 Example
 

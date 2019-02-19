@@ -9,8 +9,8 @@
  */
 
 ;(function() {
-  var letters = 'abcdefghijklmnopqrstuvwxyz'; // letters used for filler
-  var wordre = /^[a-z]+$/;                    // what a valid word looks like
+  var LETTERS = 'abcdefghijklmnopqrstuvwxyz'; // letters used for filler
+  var WORD_RE = /^[a-z]+$/;                   // what a valid word looks like
   var MAXATTEMPTS = 20;                       // maximum amount of times to place a word
 
   /**
@@ -24,10 +24,11 @@
     height = +height || 20;
     opts = opts || {};
     opts.backwards = opts.hasOwnProperty('backwards') ? opts.backwards : 0.5;
+    opts.letters = opts.letters || LETTERS;
 
     // filter out any non-words
     words = words.filter(function(a) {
-      return wordre.test(a);
+      return WORD_RE.test(a);
     });
 
     // sort the words by length (biggest first)
@@ -120,8 +121,8 @@
       for (var j = 0; j < grid[i].length; j++)
         if (!grid[i][j]) {
           solved[i][j] = ' ';
-          grid[i][j] = letters.charAt(
-              Math.floor(Math.random() * letters.length)
+          grid[i][j] = opts.letters.charAt(
+              Math.floor(Math.random() * opts.letters.length)
           );
         }
 

@@ -24,11 +24,12 @@ function usage() {
     'options',
     '  -c, --color        colorize the words in the puzzle, defaults to false',
     '  -d, --dimensions   the dimensions of the puzzle, ex `-d 20`, `-d 10x8`, defaults to `20x20`',
-    '  -f, --file         a newline separated list of words to use, defaults to stdin',
-    '  -h, --help         print this message and exit',
-    '  -s, --solved       print the solved puzzle as well as the actual puzzle',
-    '  -u, --updates      check for available updates',
-    '  -v, --version      print the version number and exit'
+    '  -f, --file              a newline separated list of words to use, defaults to stdin',
+    '  -h, --help              print this message and exit',
+    '  -l, --lettes <abc..>    letters to use, defaults to the alphabet',
+    '  -s, --solved            print the solved puzzle as well as the actual puzzle',
+    '  -u, --updates           check for available updates',
+    '  -v, --version           print the version number and exit'
   ].join('\n');
 }
 
@@ -38,6 +39,7 @@ var options = [
   'd:(dimensions)',
   'f:(file)',
   'h(help)',
+  'l:(letters)',
   's(solved)',
   'u(updates)',
   'v(version)'
@@ -47,6 +49,7 @@ var parser = new getopt.BasicParser(options, process.argv);
 var color = false;
 var dimensions = 20;
 var file;
+var letters;
 var solved = false;
 while ((option = parser.getopt()) !== undefined) {
   switch (option.option) {
@@ -54,6 +57,7 @@ while ((option = parser.getopt()) !== undefined) {
     case 'd': dimensions = option.optarg; break;
     case 'f': file = option.optarg; break;
     case 'h': console.log(usage()); process.exit(0);
+    case 'l': letters = option.optarg; break;
     case 's': solved = true; break;
     case 'u': // check for updates
       require('latest').checkupdate(package, function(ret, msg) {
@@ -77,7 +81,10 @@ var width = _dimensions[0];
 var height = _dimensions[1];
 
 // create the puzzle
-var puzzle = wordsearch(words, width, height, {color: color});
+var puzzle = wordsearch(words, width, height, {
+    letters: letters,
+    color: color
+});
 
 if (puzzle.unplaced.length)
   console.error('failed to place %d words: %s',
