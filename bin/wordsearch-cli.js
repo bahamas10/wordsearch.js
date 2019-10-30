@@ -26,7 +26,7 @@ function usage() {
     '  -d, --dimensions   the dimensions of the puzzle, ex `-d 20`, `-d 10x8`, defaults to `20x20`',
     '  -f, --file              a newline separated list of words to use, defaults to stdin',
     '  -h, --help              print this message and exit',
-    '  -l, --lettes <abc..>    letters to use, defaults to the alphabet',
+    '  -l, --letters <abc..>    letters to use, defaults to the alphabet',
     '  -s, --solved            print the solved puzzle as well as the actual puzzle',
     '  -u, --updates           check for available updates',
     '  -v, --version           print the version number and exit'
