@@ -8,10 +8,10 @@
  * @preserve
  */
 
-;(function() {
-  var LETTERS = 'abcdefghijklmnopqrstuvwxyz'; // letters used for filler
-  var WORD_RE = /^[a-z]+$/;                   // what a valid word looks like
-  var MAXATTEMPTS = 20;                       // maximum amount of times to place a word
+;(function () {
+  const LETTERS = 'abcdefghijklmnopqrstuvwxyz'; // letters used for filler
+  const WORD_RE = /^[a-z]+$/;                   // what a valid word looks like
+  const MAX_ATTEMPTS = 20;                       // maximum amount of times to place a word
 
   /**
    * wordsearch
@@ -27,38 +27,42 @@
     opts.letters = opts.letters || LETTERS;
 
     // filter out any non-words
-    words = words.filter(function(a) {
+    words = words.filter(function (a) {
       return WORD_RE.test(a);
     });
 
     // sort the words by length (biggest first)
-    words.sort(function(a, b) {
+    words.sort(function (a, b) {
       return a.length < b.length ? -1 : 1;
     });
 
     // populate the grid with empty arrays
-    var grid = new Array(height);
-    for (var i = 0; i < grid.length; i++)
+    const grid = new Array(height);
+    for (let i = 0; i < grid.length; i++) {
       grid[i] = new Array(width);
+    }
 
-    var unplaced = [];
+    let placed = {};
+    const unplaced = [];
 
     // loop the words
-    var colorno = 0;
-    for (var i = 0; i < words.length; i++) {
-      var word = originalword = words[i];
+    let colorno = 0;
+    for (let i = 0; i < words.length; i++) {
+      let originalword = words[i];
+      let word = originalword;
 
       // reverse the word if needed
-      if (Math.random() < opts.backwards)
+      if (Math.random() < opts.backwards) {
         word = word.split('').reverse().join('');
+      }
 
       // pick a random spot
       // try to place the word in the grid
-      var attempts = 0;
-      while (attempts < MAXATTEMPTS) {
+      let attempts = 0;
+      while (attempts < MAX_ATTEMPTS) {
         // determine the direction (up-right, right, down-right, down)
-        var direction = Math.floor(Math.random() * 4);
-        var info = directioninfo(word, direction, width, height);
+        const direction = Math.floor(Math.random() * 4);
+        const info = directioninfo(word, direction, width, height);
 
         // word is too long, bail out
         if (info.maxx < 0 || info.maxy < 0 || info.maxy < info.miny || info.maxx < info.minx) {
@@ -67,14 +71,16 @@
         }
 
         // random starting point
-        var x = ox = Math.round(Math.random() * (info.maxx - info.minx) + info.minx);
-        var y = oy = Math.round(Math.random() * (info.maxy - info.miny) + info.miny);
+        let ox = Math.round(Math.random() * (info.maxx - info.minx) + info.minx);
+        let x = ox;
+        let oy = Math.round(Math.random() * (info.maxy - info.miny) + info.miny);
+        let y = oy;
 
         // check to make sure there are no collisions
-        var placeable = true;
-        var count = 0;
-        for (var l = 0; l < word.length; l++) {
-          var charingrid = grid[y][x];
+        let placeable = true;
+        let count = 0;
+        for (let l = 0; l < word.length; l++) {
+          const charingrid = grid[y][x];
 
           if (charingrid) { // check if there is a character in the grid
             if (charingrid !== word.charAt(l)) {
@@ -99,7 +105,9 @@
         // reset x and y and place it
         x = ox;
         y = oy;
-        for (var l = 0; l < word.length; l++) {
+        placed[originalword] = [];
+        for (let l = 0; l < word.length; l++) {
+          placed[originalword] = [...placed[originalword], [x, y]];
           grid[y][x] = word.charAt(l);
           if (opts.color) grid[y][x] = '\033[' + (colorno + 41) + 'm' + grid[y][x] + '\033[0m';
 
@@ -114,22 +122,25 @@
     } // end word loop
 
     // the solved grid... XXX I hate this
-    var solved = JSON.parse(JSON.stringify(grid));
+    const solved = JSON.parse(JSON.stringify(grid));
 
     // put in filler characters
-    for (var i = 0; i < grid.length; i++)
-      for (var j = 0; j < grid[i].length; j++)
+    for (let i = 0; i < grid.length; i++) {
+      for (let j = 0; j < grid[i].length; j++) {
         if (!grid[i][j]) {
           solved[i][j] = ' ';
           grid[i][j] = opts.letters.charAt(
-              Math.floor(Math.random() * opts.letters.length)
+            Math.floor(Math.random() * opts.letters.length)
           );
         }
+      }
+    }
 
     // give the user some stuff
     return {
       grid: grid,
       solved: solved,
+      placed: placed,
       unplaced: unplaced
     };
   }
@@ -141,10 +152,10 @@
    */
   function directioninfo(word, direction, width, height) {
     // determine the bounds
-    var minx = 0, miny = 0;
-    var maxx = width - 1;
-    var maxy = height - 1;
-    var dx = 0, dy = 0;
+    let minx = 0, miny = 0;
+    let maxx = width - 1;
+    let maxy = height - 1;
+    let dx = 0, dy = 0;
     switch (direction) {
       case 0: // up-right
         maxy = height - 1;
@@ -182,12 +193,13 @@
       miny: miny,
       dx: dx,
       dy: dy
-    }
+    };
   }
 
   // export the function
-  if (typeof exports === 'undefined')
+  if (typeof exports === 'undefined') {
     window.wordsearch = wordsearch;
-  else
+  } else {
     module.exports = wordsearch;
+  }
 })();

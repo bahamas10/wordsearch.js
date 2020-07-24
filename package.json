@@ -9,7 +9,7 @@
   },
   "repository": "git://github.com/bahamas10/wordsearch.js.git",
   "dependencies": {
-    "posix-getopt": "~1.0.0",
-    "latest": "~0.1.0"
+    "posix-getopt": "~1.2.0",
+    "latest": "~0.2.0"
   }
 }
