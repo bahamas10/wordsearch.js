@@ -11,7 +11,7 @@
 ;(function () {
   const LETTERS = 'abcdefghijklmnopqrstuvwxyz'; // letters used for filler
   const WORD_RE = /^[a-z]+$/;                   // what a valid word looks like
-  const MAXATTEMPTS = 20;                       // maximum amount of times to place a word
+  const MAX_ATTEMPTS = 20;                       // maximum amount of times to place a word
 
   /**
    * wordsearch
@@ -57,7 +57,7 @@
       // pick a random spot
       // try to place the word in the grid
       let attempts = 0;
-      while (attempts < MAXATTEMPTS) {
+      while (attempts < MAX_ATTEMPTS) {
         // determine the direction (up-right, right, down-right, down)
         const direction = Math.floor(Math.random() * 4);
         const info = directioninfo(word, direction, width, height);
