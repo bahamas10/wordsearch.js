@@ -109,7 +109,7 @@
         for (let l = 0; l < word.length; l++) {
           placed[originalword] = [...placed[originalword], [x, y]];
           grid[y][x] = word.charAt(l);
-          // if (opts.color) grid[y][x] = '\033[' + (colorno + 41) + 'm' + grid[y][x] + '\033[0m';
+          if (opts.color) grid[y][x] = '\033[' + (colorno + 41) + 'm' + grid[y][x] + '\033[0m';
 
           y += info.dy;
           x += info.dx;
