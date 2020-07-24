@@ -42,6 +42,8 @@
       grid[i] = new Array(width);
     }
 
+    const placed = [];
+    const placedOriginal = [];
     const unplaced = [];
 
     // loop the words
@@ -108,6 +110,8 @@
           y += info.dy;
           x += info.dx;
         }
+        placed.push(word);
+        placedOriginal.push(originalword);
         break;
       } // end placement while loop
 
@@ -134,6 +138,8 @@
     return {
       grid: grid,
       solved: solved,
+      placed: placed,
+      placedOriginal: placedOriginal,
       unplaced: unplaced
     };
   }
