@@ -42,14 +42,14 @@
       grid[i] = new Array(width);
     }
 
-    const placed = [];
-    const placedOriginal = [];
+    let placed = {};
     const unplaced = [];
 
     // loop the words
     let colorno = 0;
     for (let i = 0; i < words.length; i++) {
-      let word = originalword = words[i];
+      let originalword = words[i];
+      let word = originalword;
 
       // reverse the word if needed
       if (Math.random() < opts.backwards) {
@@ -71,8 +71,10 @@
         }
 
         // random starting point
-        let x = ox = Math.round(Math.random() * (info.maxx - info.minx) + info.minx);
-        let y = oy = Math.round(Math.random() * (info.maxy - info.miny) + info.miny);
+        let ox = Math.round(Math.random() * (info.maxx - info.minx) + info.minx);
+        let x = ox;
+        let oy = Math.round(Math.random() * (info.maxy - info.miny) + info.miny);
+        let y = oy;
 
         // check to make sure there are no collisions
         let placeable = true;
@@ -103,15 +105,15 @@
         // reset x and y and place it
         x = ox;
         y = oy;
+        placed[originalword] = [];
         for (let l = 0; l < word.length; l++) {
+          placed[originalword] = [...placed[originalword], [x, y]];
           grid[y][x] = word.charAt(l);
-          if (opts.color) grid[y][x] = '\033[' + (colorno + 41) + 'm' + grid[y][x] + '\033[0m';
+          // if (opts.color) grid[y][x] = '\033[' + (colorno + 41) + 'm' + grid[y][x] + '\033[0m';
 
           y += info.dy;
           x += info.dx;
         }
-        placed.push(word);
-        placedOriginal.push(originalword);
         break;
       } // end placement while loop
 
@@ -139,7 +141,6 @@
       grid: grid,
       solved: solved,
       placed: placed,
-      placedOriginal: placedOriginal,
       unplaced: unplaced
     };
   }
